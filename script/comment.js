@@ -11,16 +11,28 @@ module.exports = React.createClass({
 
 		var time = moment(c.time)
 
-    return rd.div(
+    return rd.article(
 			{
 				className: 'comment',
 			},
-			rd.time(
-				{
-					title: time.format('llll'),
-					dateTime: time.format(),
-				},
-				time.fromNow()
+			rd.header(
+				{},
+				rd.a(
+					{
+						href: c.website || null,
+						rel: 'author',
+					},
+					c.author || 'Unbekannt'
+				),
+				' sagte ',
+				rd.time(
+					{
+						title: time.format('llll'),
+						dateTime: time.format(),
+						pubdate: true,
+					},
+					time.fromNow()
+				)
 			),
 			rd.p({}, c.text)
     )
