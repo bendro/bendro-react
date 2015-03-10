@@ -1,6 +1,7 @@
 'use strict'
 var gulp = require('gulp')
 var less = require('gulp-less')
+var autoprefixer = require('gulp-autoprefixer')
 var browserify = require('browserify')
 var vinylSourceStream = require('vinyl-source-stream')
 
@@ -45,6 +46,7 @@ gulp.task('libs', function() {
 gulp.task('style', function() {
 	return gulp.src('./style/main.less')
 		.pipe(less())
+		.pipe(autoprefixer())
 		.pipe(gulp.dest('./build/'))
 })
 
