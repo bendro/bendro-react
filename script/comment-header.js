@@ -24,6 +24,15 @@ module.exports = React.createClass({
   render: function() {
 		var c = this.props.comment
 
+		var edit = null
+		if(c.ctime !== c.mtime)
+			edit = rd.span(
+				{},
+				' (bearbeitet ',
+				this.renderDate(c.mtime),
+				')'
+			)
+
     return	rd.header(
 			{},
 			rd.a(
@@ -34,7 +43,8 @@ module.exports = React.createClass({
 				c.author || 'Unbekannt'
 			),
 			' sagte ',
-			this.renderDate(c.time)
+			this.renderDate(c.ctime),
+			edit
 		)
   },
 })
