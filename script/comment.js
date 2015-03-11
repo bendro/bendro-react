@@ -2,6 +2,8 @@
 var React = require('react')
 var moment = require('moment')
 
+var CommentHeader = React.createFactory(require('./comment-header'))
+
 module.exports = React.createClass({
 	displayName: 'CommentList',
 
@@ -15,25 +17,7 @@ module.exports = React.createClass({
 			{
 				className: 'comment',
 			},
-			rd.header(
-				{},
-				rd.a(
-					{
-						href: c.website || null,
-						rel: 'author',
-					},
-					c.author || 'Unbekannt'
-				),
-				' sagte ',
-				rd.time(
-					{
-						title: time.format('llll'),
-						dateTime: time.format(),
-						pubdate: true,
-					},
-					time.fromNow()
-				)
-			),
+			CommentHeader({comment: c}),
 			rd.p({}, c.text)
     )
   },
