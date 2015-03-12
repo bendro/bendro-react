@@ -22,8 +22,26 @@ module.exports = React.createClass({
 			.get(this.props.url + 'comments?site=' + this.props.site)
 			.end(function(err, res) {
 				//TODO error ?
+				var cs = []
+				var cur = null
 
-				this.setState({comments: res.body})
+				res.body.forEach(function(c) {
+					if(c.left === 0) {
+						cs.push(c)
+						cur = c
+						return
+					}
+
+					while(cur.right < c.right)
+						cur = cur.parent
+
+					c.parent = cur
+					cur.children = cur.children || []
+					cur.children.push(c)
+					cur = c
+				})
+
+				this.setState({comments: cs})
 			}.bind(this))
 	},
 
@@ -44,8 +62,13 @@ module.exports = React.createClass({
 		var rd = React.DOM
 		return rd.div(
 			{},
-			CommentForm({onSendComment: this.onSendComment}),
-			CommentList({comments: this.state.comments})
+			CommentForm({
+				onSendComment: this.onSendComment,
+			}),
+			CommentList({
+				comments: this.state.comments,
+				onSendComment: this.onSendComment,
+			})
 		)
 	},
 })

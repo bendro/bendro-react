@@ -10,8 +10,12 @@ module.exports = React.createClass({
 		var rd = React.DOM
 
 		var comments = this.props.comments.map(function(c) {
-			return Comment({key: c.id, comment: c})
-		})
+			return Comment({
+				key: c.id,
+				comment: c,
+				onSendComment: this.props.onSendComment,
+			})
+		}.bind(this))
 
     return rd.div(
 			{},

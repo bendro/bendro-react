@@ -1,13 +1,20 @@
 'use strict'
 var React = require('react')
 var moment = require('moment')
-
 var CommentHeader = React.createFactory(require('./comment-header'))
+var CommentForm = React.createFactory(require('./comment-form'))
 
 module.exports = React.createClass({
 	displayName: 'CommentList',
 
+	onSendComment: function(comment) {
+		comment.responseTo = this.props.comment.id
+		this.props.onSendComment(comment)
+	},
+
   render: function() {
+		var CommentList = React.createFactory(require('./comment-list'))
+
 		var rd = React.DOM
 		var c = this.props.comment
 
@@ -18,7 +25,18 @@ module.exports = React.createClass({
 				className: 'comment',
 			},
 			CommentHeader({comment: c}),
-			rd.p({}, c.text)
+			rd.p({}, c.text),
+			(
+				c.children ?
+				CommentList({
+					comments: c.children,
+					onSendComment: this.props.onSendComment,
+				}) :
+				null
+			)/*,
+			CommentForm({
+				onSendComment: this.onSendComment,
+			})*/
     )
   },
 })
