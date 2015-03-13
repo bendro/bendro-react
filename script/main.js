@@ -1,7 +1,7 @@
 'use strict'
 var React = require('react')
-var Comments = React.createFactory(require('./comments'))
+var comps = require('./components.js')
 
 module.exports = function renderComments(props, elem) {
-	return React.render(Comments(props), elem)
+	return React.render(comps.Comments(props), elem)
 }

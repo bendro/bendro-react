@@ -1,8 +1,7 @@
 'use strict'
 var React = require('react')
 var request = require('superagent')
-var CommentList = React.createFactory(require('./comment-list'))
-var CommentForm = React.createFactory(require('./comment-form'))
+var comps = require('./components.js')
 
 var rd = React.DOM
 
@@ -63,10 +62,10 @@ module.exports = React.createClass({
 	render: function() {
 		return rd.div(
 			{},
-			CommentForm({
+			comps.CommentForm({
 				onSendComment: this.onSendComment,
 			}),
-			CommentList({
+			comps.CommentList({
 				comments: this.state.comments,
 				onSendComment: this.onSendComment,
 			})

@@ -1,8 +1,7 @@
 'use strict'
 var React = require('react')
 var moment = require('moment')
-var CommentHeader = React.createFactory(require('./comment-header'))
-var CommentForm = React.createFactory(require('./comment-form'))
+var comps = require('./components.js')
 
 var rd = React.DOM
 
@@ -15,8 +14,6 @@ module.exports = React.createClass({
 	},
 
   render: function() {
-		var CommentList = React.createFactory(require('./comment-list'))
-
 		var c = this.props.comment
 
 		var time = moment(c.time)
@@ -25,17 +22,17 @@ module.exports = React.createClass({
 			{
 				className: 'comment',
 			},
-			CommentHeader({comment: c}),
+			comps.CommentHeader({comment: c}),
 			rd.p({}, c.text),
 			(
 				c.children ?
-				CommentList({
+				comps.CommentList({
 					comments: c.children,
 					onSendComment: this.props.onSendComment,
 				}) :
 				null
 			)/*,
-			CommentForm({
+			comps.CommentForm({
 				onSendComment: this.onSendComment,
 			})*/
     )

@@ -1,7 +1,7 @@
 'use strict'
 var React = require('react')
+var comps = require('./components.js')
 
-var Comment = React.createFactory(require('./comment'))
 var rd = React.DOM
 
 module.exports = React.createClass({
@@ -9,7 +9,7 @@ module.exports = React.createClass({
 
   render: function() {
 		var comments = this.props.comments.map(function(c) {
-			return Comment({
+			return comps.Comment({
 				key: c.id,
 				comment: c,
 				onSendComment: this.props.onSendComment,

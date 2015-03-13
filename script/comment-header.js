@@ -1,8 +1,7 @@
 'use strict'
 var React = require('react')
 var moment = require('moment')
-
-var CommentHeader = React.createFactory(require('./comment-header'))
+var comps = require('./components.js')
 
 var rd = React.DOM
 

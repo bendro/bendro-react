@@ -1,5 +1,6 @@
 'use strict'
 var React = require('react')
+var comps = require('./components.js')
 
 var rd = React.DOM
 
