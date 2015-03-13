@@ -4,6 +4,8 @@ var request = require('superagent')
 var CommentList = React.createFactory(require('./comment-list'))
 var CommentForm = React.createFactory(require('./comment-form'))
 
+var rd = React.DOM
+
 module.exports = React.createClass({
 	displayName: 'Comments',
 
@@ -59,7 +61,6 @@ module.exports = React.createClass({
 	},
 
 	render: function() {
-		var rd = React.DOM
 		return rd.div(
 			{},
 			CommentForm({

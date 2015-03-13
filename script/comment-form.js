@@ -1,6 +1,8 @@
 'use strict'
 var React = require('react')
 
+var rd = React.DOM
+
 module.exports = React.createClass({
 	displayName: 'CommentForm',
 
@@ -21,7 +23,6 @@ module.exports = React.createClass({
 	},
 
   render: function() {
-		var rd = React.DOM
     return rd.div(
 			{},
 			rd.textarea({onChange: this.onTextChange, value: this.state.text}),

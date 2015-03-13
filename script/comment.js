@@ -4,6 +4,8 @@ var moment = require('moment')
 var CommentHeader = React.createFactory(require('./comment-header'))
 var CommentForm = React.createFactory(require('./comment-form'))
 
+var rd = React.DOM
+
 module.exports = React.createClass({
 	displayName: 'CommentList',
 
@@ -15,7 +17,6 @@ module.exports = React.createClass({
   render: function() {
 		var CommentList = React.createFactory(require('./comment-list'))
 
-		var rd = React.DOM
 		var c = this.props.comment
 
 		var time = moment(c.time)
