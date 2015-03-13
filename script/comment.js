@@ -7,7 +7,7 @@ var CommentForm = React.createFactory(require('./comment-form'))
 var rd = React.DOM
 
 module.exports = React.createClass({
-	displayName: 'CommentList',
+	displayName: 'Comment',
 
 	onSendComment: function(comment) {
 		comment.responseTo = this.props.comment.id

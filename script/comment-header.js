@@ -7,7 +7,7 @@ var CommentHeader = React.createFactory(require('./comment-header'))
 var rd = React.DOM
 
 module.exports = React.createClass({
-	displayName: 'CommentList',
+	displayName: 'CommentHeader',
 
 	renderDate: function(time) {
 		time = moment(time)
