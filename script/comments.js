@@ -18,14 +18,16 @@ module.exports = React.createClass({
 	},
 
 	componentDidMount: function() {
-	 this.loadComments()
+		this.loadComments()
 	},
 
 	loadComments: function() {
 		request
 			.get(this.props.url + 'comments?site=' + this.props.site)
 			.end(function(err, res) {
-				//TODO error ?
+				if(err) {
+					throw err
+				}
 				var cs = []
 				var cur = null
 
@@ -36,8 +38,9 @@ module.exports = React.createClass({
 						return
 					}
 
-					while(cur.right < c.right)
+					while(cur.right < c.right) {
 						cur = cur.parent
+					}
 
 					c.parent = cur
 					cur.children = cur.children || []
@@ -56,6 +59,10 @@ module.exports = React.createClass({
 			.post(this.props.url + 'comment')
 			.send(comment)
 			.end(function(err, res) {
+				if(err) {
+					throw err
+				}
+
 				this.setState({
 					comments: [res.body].concat(this.state.comments),
 				})
@@ -65,10 +72,10 @@ module.exports = React.createClass({
 	render: function() {
 		return rd.div(
 			{},
-			comps.CommentForm({
+			comps.commentForm({
 				onSendComment: this.onSendComment,
 			}),
-			comps.CommentList({
+			comps.commentList({
 				comments: this.state.comments,
 				onSendComment: this.onSendComment,
 			})

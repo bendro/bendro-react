@@ -15,26 +15,26 @@ module.exports = React.createClass({
 		this.props.onSendComment(comment)
 	},
 
-  render: function() {
+	render: function() {
 		var c = this.props.comment
 
-    return rd.article(
+		return rd.article(
 			{
 				className: 'comment',
 			},
-			comps.CommentHeader({comment: c}),
+			comps.commentHeader({comment: c}),
 			rd.p({}, c.text),
 			(
 				c.children ?
-				comps.CommentList({
+				comps.commentList({
 					comments: c.children,
 					onSendComment: this.props.onSendComment,
 				}) :
 				null
 			)/*,
-			comps.CommentForm({
+			comps.commentForm({
 				onSendComment: this.onSendComment,
 			})*/
-    )
-  },
+		)
+	},
 })

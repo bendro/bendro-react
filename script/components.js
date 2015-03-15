@@ -8,5 +8,7 @@ var React = require('react')
 	require('./comment-list.js'),
 	require('./comments.js'),
 ].forEach(function(c) {
-	exports[c.displayName] = React.createFactory(c)
+	var name = c.displayName
+	name = name.charAt(0).toLowerCase() + name.substr(1)
+	exports[name] = React.createFactory(c)
 })

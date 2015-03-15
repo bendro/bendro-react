@@ -1,7 +1,6 @@
 'use strict'
 var React = require('react')
 var ReactIntl = require('react-intl')
-var comps = require('./components.js')
 
 var FormattedRelative = React.createFactory(ReactIntl.FormattedRelative)
 var FormattedMessage = React.createFactory(ReactIntl.FormattedMessage)
@@ -18,16 +17,16 @@ module.exports = React.createClass({
 				title: this.formatDate(time, 'datetime'),
 				dateTime: time,
 			},
-			FormattedRelative({value: time, style: 'numeric'})
+			new FormattedRelative({value: time, style: 'numeric'})
 		)
 	},
 
-  render: function() {
+	render: function() {
 		var c = this.props.comment
 
-    return	rd.header(
+		return rd.header(
 			{},
-			FormattedMessage({
+			new FormattedMessage({
 				message: c.ctime === c.mtime
 					? this.getIntlMessage('commentHeader')
 					: this.getIntlMessage('commentHeaderEdited'),
@@ -42,5 +41,5 @@ module.exports = React.createClass({
 				mtime: this.renderDate(c.mtime),
 			})
 		)
-  },
+	},
 })

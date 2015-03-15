@@ -10,18 +10,18 @@ module.exports = React.createClass({
 
 	mixins: [ReactIntl.IntlMixin],
 
-  render: function() {
+	render: function() {
 		var comments = this.props.comments.map(function(c) {
-			return comps.Comment({
+			return comps.comment({
 				key: c.id,
 				comment: c,
 				onSendComment: this.props.onSendComment,
 			})
 		}.bind(this))
 
-    return rd.div(
+		return rd.div(
 			{},
 			comments
-    )
-  },
+		)
+	},
 })

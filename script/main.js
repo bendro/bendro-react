@@ -25,5 +25,5 @@ module.exports = function renderComments(props, elem) {
 		commentHeaderEdited: '{author} schrieb {ctime} (bearbeitet {mtime})',
 	}
 
-	return React.render(comps.Comments(props), elem)
+	return React.render(comps.comments(props), elem)
 }
