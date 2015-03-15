@@ -4,6 +4,7 @@ var less = require('gulp-less')
 var autoprefixer = require('gulp-autoprefixer')
 var browserify = require('browserify')
 var vinylSourceStream = require('vinyl-source-stream')
+var eslint = require('gulp-eslint')
 
 var extraLibs = [
 ]
@@ -33,10 +34,18 @@ function script(libs) {
 		.pipe(gulp.dest('./build/'))
 }
 
-gulp.task('script', function() {
+gulp.task('script-lint', function() {
+	return gulp.src(['./script/**/*.js', './.gulpfile.js'])
+		.pipe(eslint())
+		.pipe(eslint.format())
+		.pipe(eslint.failAfterError())
+})
+
+gulp.task('script-build', function() {
 	return script(false)
 })
 
+gulp.task('script', ['script-lint', 'script-build'])
 
 gulp.task('libs', function() {
 	return script(true)

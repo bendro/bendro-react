@@ -1,0 +1,22 @@
+{
+	"rules": {
+		"quotes": [2, "single"],
+		"comma-dangle": [2, "always-multiline"],
+		"semi": [2, "never"],
+		"semi-spacing": 0,
+		"no-underscore-dangle": 0,
+		"max-len": [1, 80, 2],
+		"complexity": [1, 4],
+		// https://github.com/eslint/eslint/issues/1797
+		"indent": [2, "tab", {indentSwitchCase: false}],
+		"brace-style": [2, "1tbs", {"allowSingleLine": false}],
+		"space-in-brackets": [2, "never"],
+		"space-after-keywords": [1, "never"],
+		"func-style": [2, "declaration"],
+		"strict": [2, "global"]
+	},
+	"env": {
+		"browser": true,
+		"node": true
+	}
+}
