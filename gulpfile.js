@@ -5,6 +5,7 @@ var autoprefixer = require('gulp-autoprefixer')
 var browserify = require('browserify')
 var vinylSourceStream = require('vinyl-source-stream')
 var eslint = require('gulp-eslint')
+var cached = require('gulp-cached')
 
 var extraLibs = [
 ]
@@ -36,6 +37,7 @@ function script(libs) {
 
 gulp.task('script-lint', function() {
 	return gulp.src(['./script/**/*.js', './.gulpfile.js'])
+		.pipe(cached('script-lint'))
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError())
