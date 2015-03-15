@@ -1,6 +1,5 @@
 'use strict'
 var React = require('react')
-var moment = require('moment')
 var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 

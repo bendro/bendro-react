@@ -6,7 +6,6 @@ var browserify = require('browserify')
 var vinylSourceStream = require('vinyl-source-stream')
 
 var extraLibs = [
-	'moment/locale/de',
 ]
 
 function script(libs) {

@@ -1,6 +1,5 @@
 'use strict'
 var React = require('react')
-var moment = require('moment')
 var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
@@ -18,8 +17,6 @@ module.exports = React.createClass({
 
   render: function() {
 		var c = this.props.comment
-
-		var time = moment(c.time)
 
     return rd.article(
 			{
