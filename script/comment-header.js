@@ -1,12 +1,15 @@
 'use strict'
 var React = require('react')
 var moment = require('moment')
+var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
 var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'CommentHeader',
+
+	mixins: [ReactIntl.IntlMixin],
 
 	renderDate: function(time) {
 		time = moment(time)

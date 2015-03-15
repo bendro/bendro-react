@@ -1,5 +1,6 @@
 'use strict'
 var React = require('react')
+var ReactIntl = require('react-intl')
 var request = require('superagent')
 var comps = require('./components.js')
 
@@ -7,6 +8,8 @@ var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'Comments',
+
+	mixins: [ReactIntl.IntlMixin],
 
 	getInitialState: function() {
 		return {

@@ -1,11 +1,14 @@
 'use strict'
 var React = require('react')
+var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
 var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'CommentForm',
+
+	mixins: [ReactIntl.IntlMixin],
 
 	getInitialState: function() {
 		return {

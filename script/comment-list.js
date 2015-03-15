@@ -1,11 +1,14 @@
 'use strict'
 var React = require('react')
+var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
 var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'CommentList',
+
+	mixins: [ReactIntl.IntlMixin],
 
   render: function() {
 		var comments = this.props.comments.map(function(c) {

@@ -1,12 +1,15 @@
 'use strict'
 var React = require('react')
 var moment = require('moment')
+var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
 var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'Comment',
+
+	mixins: [ReactIntl.IntlMixin],
 
 	onSendComment: function(comment) {
 		comment.responseTo = this.props.comment.id
