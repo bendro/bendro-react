@@ -4,6 +4,8 @@ var moment = require('moment')
 var ReactIntl = require('react-intl')
 var comps = require('./components.js')
 
+var FormattedRelative = React.createFactory(ReactIntl.FormattedRelative)
+var FormattedMessage = React.createFactory(ReactIntl.FormattedMessage)
 var rd = React.DOM
 
 module.exports = React.createClass({
@@ -12,41 +14,34 @@ module.exports = React.createClass({
 	mixins: [ReactIntl.IntlMixin],
 
 	renderDate: function(time) {
-		time = moment(time)
 		return rd.time(
 			{
-				title: time.format('llll'),
-				dateTime: time.format(),
-				pubdate: true,
+				title: this.formatDate(time, 'datetime'),
+				dateTime: time,
 			},
-			time.fromNow()
+			FormattedRelative({value: time, style: 'numeric'})
 		)
 	},
 
   render: function() {
 		var c = this.props.comment
 
-		var edit = null
-		if(c.ctime !== c.mtime)
-			edit = rd.span(
-				{},
-				' (bearbeitet ',
-				this.renderDate(c.mtime),
-				')'
-			)
-
     return	rd.header(
 			{},
-			rd.a(
-				{
-					href: c.website || null,
-					rel: 'author',
-				},
-				c.author || 'Unbekannt'
-			),
-			' sagte ',
-			this.renderDate(c.ctime),
-			edit
+			FormattedMessage({
+				message: c.ctime === c.mtime
+					? this.getIntlMessage('commentHeader')
+					: this.getIntlMessage('commentHeaderEdited'),
+				author: rd.a(
+					{
+						href: c.website || null,
+						rel: 'author,external',
+					},
+					c.author || this.getIntlMessage('anonymous')
+				),
+				ctime: this.renderDate(c.ctime),
+				mtime: this.renderDate(c.mtime),
+			})
 		)
   },
 })
