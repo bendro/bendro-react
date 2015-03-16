@@ -6,7 +6,7 @@
 		"semi-spacing": 0,
 		"no-underscore-dangle": 0,
 		"max-len": [1, 80, 2],
-		"complexity": [1, 4],
+		"complexity": [1, 10],
 		// https://github.com/eslint/eslint/issues/1797
 		"indent": [2, "tab", {indentSwitchCase: false}],
 		"brace-style": [2, "1tbs", {"allowSingleLine": false}],
