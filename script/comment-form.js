@@ -33,11 +33,22 @@ module.exports = React.createClass({
 		this.setState({activated: true})
 	},
 
+	onDeactivateClick: function() {
+		this.setState({
+			activated: false,
+		})
+	},
+
 	render: function() {
 		if(this.state.activated) {
 			return rd.div(
 				{},
 				rd.textarea({onChange: this.onTextChange, value: this.state.text}),
+				(
+					this.props.defaultClosed
+					? rd.button({onClick: this.onDeactivateClick}, 'schließen')
+					: null
+				),
 				rd.button({onClick: this.onSendClick}, 'senden')
 			)
 		} else {
