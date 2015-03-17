@@ -13,7 +13,8 @@
 		"space-in-brackets": [2, "never"],
 		"space-after-keywords": [1, "never"],
 		"func-style": [2, "declaration"],
-		"strict": [2, "global"]
+		"strict": [2, "global"],
+		"yoda": [2, "always", {"exceptRange": true}]
 	},
 	"env": {
 		"browser": true,

@@ -8,7 +8,7 @@ i.__addLocaleData({
 		if(ord) {
 			return 'other'
 		}
-		return n === 1 && !s[1] ? 'one' : 'other'
+		return 1 === n && !s[1] ? 'one' : 'other'
 	},
 	'fields': {
 		'year': {
