@@ -2,8 +2,8 @@
 var React = require('react')
 var ReactIntl = require('react-intl')
 
-var FormattedRelative = React.createFactory(ReactIntl.FormattedRelative)
-var FormattedMessage = React.createFactory(ReactIntl.FormattedMessage)
+var formattedRelative = React.createFactory(ReactIntl.FormattedRelative)
+var formattedMessage = React.createFactory(ReactIntl.FormattedMessage)
 var rd = React.DOM
 
 module.exports = React.createClass({
@@ -48,7 +48,7 @@ module.exports = React.createClass({
 				dateTime: time,
 				itemProp: type,
 			},
-			new FormattedRelative({value: time, style: 'numeric'})
+			formattedRelative({value: time, style: 'numeric'})
 		)
 	},
 
@@ -57,7 +57,7 @@ module.exports = React.createClass({
 
 		return rd.header(
 			{},
-			new FormattedMessage({
+			formattedMessage({
 				message: c.ctime === c.mtime
 					? this.getIntlMessage('commentHeader')
 					: this.getIntlMessage('commentHeaderEdited'),
