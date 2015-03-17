@@ -11,11 +11,42 @@ module.exports = React.createClass({
 
 	mixins: [ReactIntl.IntlMixin],
 
-	renderDate: function(time) {
+	renderAuthor: function(c) {
+		var a = rd.span(
+			{
+				itemProp: 'name',
+			},
+			c.author || this.getIntlMessage('anonymous')
+		)
+
+		if(c.website) {
+			a = rd.a(
+				{
+					href: c.website,
+					rel: 'author,external',
+					itemProp: 'url',
+				},
+				a
+			)
+		}
+
+		return rd.span(
+			{
+				className: 'author',
+				itemScope: true,
+				itemType: 'http://schema.org/Person',
+				itemProp: 'author',
+			},
+			a
+		)
+	},
+
+	renderDate: function(time, type) {
 		return rd.time(
 			{
 				title: this.formatDate(time, 'datetime'),
 				dateTime: time,
+				itemProp: type,
 			},
 			new FormattedRelative({value: time, style: 'numeric'})
 		)
@@ -30,15 +61,9 @@ module.exports = React.createClass({
 				message: c.ctime === c.mtime
 					? this.getIntlMessage('commentHeader')
 					: this.getIntlMessage('commentHeaderEdited'),
-				author: rd.a(
-					{
-						href: c.website || null,
-						rel: 'author,external',
-					},
-					c.author || this.getIntlMessage('anonymous')
-				),
-				ctime: this.renderDate(c.ctime),
-				mtime: this.renderDate(c.mtime),
+				author: this.renderAuthor(c),
+				ctime: this.renderDate(c.ctime, 'dateCreated'),
+				mtime: this.renderDate(c.mtime, 'dateModified'),
 			})
 		)
 	},

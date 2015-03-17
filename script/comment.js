@@ -21,9 +21,18 @@ module.exports = React.createClass({
 		return rd.article(
 			{
 				className: 'comment',
+				itemScope: true,
+				itemProp: c.responseTo ? 'comment' : null,
+				itemType: 'http://schema.org/Comment',
 			},
 			comps.commentHeader({comment: c}),
-			rd.p({}, c.text),
+			rd.div(
+				{
+					className: 'text',
+					itemProp: 'text',
+				},
+				c.text
+			),
 			(
 				c.children ?
 				comps.commentList({
