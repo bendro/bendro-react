@@ -12,6 +12,7 @@ module.exports = React.createClass({
 	getInitialState: function() {
 		return {
 			text: '',
+			activated: !this.props.defaultClosed,
 		}
 	},
 
@@ -22,14 +23,28 @@ module.exports = React.createClass({
 	onSendClick: function() {
 		var comment = {text: this.state.text}
 		this.props.onSendComment(comment)
-		this.setState({text: ''})
+		this.setState({
+			text: '',
+			activated: !this.props.defaultClosed,
+		})
+	},
+
+	onActivateClick: function() {
+		this.setState({activated: true})
 	},
 
 	render: function() {
-		return rd.div(
-			{},
-			rd.textarea({onChange: this.onTextChange, value: this.state.text}),
-			rd.button({onClick: this.onSendClick}, 'senden')
-		)
+		if(this.state.activated) {
+			return rd.div(
+				{},
+				rd.textarea({onChange: this.onTextChange, value: this.state.text}),
+				rd.button({onClick: this.onSendClick}, 'senden')
+			)
+		} else {
+			return rd.div(
+				{},
+				rd.button({onClick: this.onActivateClick}, 'antworten')
+			)
+		}
 	},
 })
