@@ -33,6 +33,10 @@ module.exports = React.createClass({
 				},
 				c.text
 			),
+			comps.commentForm({
+				onSendComment: this.onSendComment,
+				defaultClosed: true,
+			}),
 			(
 				c.children ?
 				comps.commentList({
@@ -40,11 +44,7 @@ module.exports = React.createClass({
 					onSendComment: this.props.onSendComment,
 				}) :
 				null
-			),
-			comps.commentForm({
-				onSendComment: this.onSendComment,
-				defaultClosed: true,
-			})
+			)
 		)
 	},
 })
