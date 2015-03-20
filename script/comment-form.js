@@ -12,6 +12,9 @@ module.exports = React.createClass({
 	getInitialState: function() {
 		return {
 			text: '',
+			author: '',
+			email: '',
+			website: '',
 			activated: !this.props.defaultClosed,
 		}
 	},
@@ -20,41 +23,93 @@ module.exports = React.createClass({
 		this.setState({text: e.target.value})
 	},
 
+	onAuthorChange: function(e) {
+		this.setState({author: e.target.value})
+	},
+
+	onEmailChange: function(e) {
+		this.setState({email: e.target.value})
+	},
+
+	onWebsiteChange: function(e) {
+		this.setState({website: e.target.value})
+	},
+
 	onSendClick: function() {
-		var comment = {text: this.state.text}
+		var comment = {
+			text: this.state.text,
+			author: this.state.author,
+			email: this.state.email,
+			website: this.state.website,
+		}
 		this.props.onSendComment(comment)
+
 		this.setState({
 			text: '',
+			author: '',
+			email: '',
+			website: '',
 			activated: !this.props.defaultClosed,
 		})
 	},
 
-	onActivateClick: function() {
+	onActivateClick: function(e) {
+		e.preventDefault()
 		this.setState({activated: true})
 	},
 
-	onDeactivateClick: function() {
-		this.setState({
-			activated: false,
-		})
+	onDeactivateClick: function(e) {
+		e.preventDefault()
+		this.setState({activated: false})
 	},
 
 	render: function() {
 		if(this.state.activated) {
 			return rd.div(
 				{},
-				rd.textarea({onChange: this.onTextChange, value: this.state.text}),
 				(
 					this.props.defaultClosed
-					? rd.button({onClick: this.onDeactivateClick}, 'schließen')
+					? rd.a(
+							{
+								onClick: this.onDeactivateClick,
+								href: '',
+							},
+							'schließen'
+						)
 					: null
 				),
+				rd.textarea({
+					onChange: this.onTextChange,
+					value: this.state.text,
+					placeholder: 'Kommentartext hier eintippen',
+				}),
+				rd.input({
+					onChange: this.onAuthorChange,
+					value: this.state.author,
+					placeholder: 'Name (optional)',
+				}),
+				rd.input({
+					onChange: this.onEmailChange,
+					value: this.state.email,
+					placeholder: 'Email (optional)',
+				}),
+				rd.input({
+					onChange: this.onWebsiteChange,
+					value: this.state.website,
+					placeholder: 'Webseite (optional)',
+				}),
 				rd.button({onClick: this.onSendClick}, 'senden')
 			)
 		} else {
 			return rd.div(
 				{},
-				rd.button({onClick: this.onActivateClick}, 'antworten')
+				rd.a(
+					{
+						onClick: this.onActivateClick,
+						href: '#',
+					},
+					'antworten'
+				)
 			)
 		}
 	},
