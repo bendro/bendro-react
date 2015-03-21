@@ -42,12 +42,12 @@ module.exports = React.createClass({
 				defaultClosed: true,
 			}),
 			(
-				c.has('children') ?
-				comps.commentList({
-					comments: c.get('children'),
+				c.has('responses')
+				? comps.commentList({
+					comments: c.get('responses'),
 					onSendComment: this.props.onSendComment,
-				}) :
-				null
+				})
+				: null
 			)
 		)
 	},

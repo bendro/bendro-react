@@ -54,15 +54,15 @@ Api.prototype.getComments = function getComments(cb) {
 				}
 
 				c.parent = cur
-				cur.children = cur.children || []
-				cur.children.push(c)
+				cur.responses = cur.responses || []
+				cur.responses.push(c)
 				cur = c
 			})
 
 			cs = cs.map(function removeParent(v) {
 				delete v.parent
-				if(v.children) {
-					v.children = v.children.map(removeParent)
+				if(v.responses) {
+					v.responses = v.responses.map(removeParent)
 				}
 				return v
 			})
