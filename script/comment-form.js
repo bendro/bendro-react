@@ -82,21 +82,28 @@ module.exports = React.createClass({
 					onChange: this.onTextChange,
 					value: this.state.text,
 					placeholder: 'Kommentartext hier eintippen',
+					className: 'text',
 				}),
 				rd.input({
 					onChange: this.onAuthorChange,
 					value: this.state.author,
 					placeholder: 'Name (optional)',
+					type: 'text',
+					className: 'author',
 				}),
 				rd.input({
 					onChange: this.onEmailChange,
 					value: this.state.email,
 					placeholder: 'Email (optional)',
+					type: 'text',
+					className: 'email',
 				}),
 				rd.input({
 					onChange: this.onWebsiteChange,
 					value: this.state.website,
 					placeholder: 'Webseite (optional)',
+					type: 'text',
+					className: 'website',
 				}),
 				rd.button({onClick: this.onSendClick}, 'senden')
 			)
