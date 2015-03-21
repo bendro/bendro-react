@@ -26,6 +26,7 @@ module.exports = React.createClass({
 					rel: 'author,external',
 					itemProp: 'url',
 					className: 'bendro-comment-header__website',
+					target: 'bendro-author',
 				},
 				a
 			)
