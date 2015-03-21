@@ -64,15 +64,18 @@ module.exports = React.createClass({
 	},
 
 	render: function() {
+		var content
+
 		if(this.state.activated) {
-			return rd.div(
+			content = rd.div(
 				{},
 				(
 					this.props.defaultClosed
 					? rd.a(
 							{
 								onClick: this.onDeactivateClick,
-								href: '',
+								href: '#',
+								className: 'bendro-comment-form__deactivate',
 							},
 							'schließen'
 						)
@@ -82,42 +85,53 @@ module.exports = React.createClass({
 					onChange: this.onTextChange,
 					value: this.state.text,
 					placeholder: 'Kommentartext hier eintippen',
-					className: 'text',
+					className: 'bendro-comment-form__text',
 				}),
 				rd.input({
 					onChange: this.onAuthorChange,
 					value: this.state.author,
 					placeholder: 'Name (optional)',
 					type: 'text',
-					className: 'author',
+					className: 'bendro-comment-form__author',
 				}),
 				rd.input({
 					onChange: this.onEmailChange,
 					value: this.state.email,
 					placeholder: 'Email (optional)',
-					type: 'text',
-					className: 'email',
+					type: 'email',
+					className: 'bendro-comment-form__email',
 				}),
 				rd.input({
 					onChange: this.onWebsiteChange,
 					value: this.state.website,
 					placeholder: 'Webseite (optional)',
-					type: 'text',
-					className: 'website',
+					type: 'url',
+					className: 'bendro-comment-form__website',
 				}),
-				rd.button({onClick: this.onSendClick}, 'senden')
-			)
-		} else {
-			return rd.div(
-				{},
-				rd.a(
+				rd.button(
 					{
-						onClick: this.onActivateClick,
-						href: '#',
+						onClick: this.onSendClick,
+						className: 'bendro-comment-form__send',
 					},
-					'antworten'
+					'senden'
 				)
 			)
+		} else {
+			content = rd.a(
+				{
+					onClick: this.onActivateClick,
+					href: '#',
+					className: 'bendro-comment-form__activate',
+				},
+				'antworten'
+			)
 		}
+
+		return rd.div(
+			{
+				className: 'bendro-comment-form',
+			},
+			content
+		)
 	},
 })

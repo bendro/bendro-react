@@ -20,7 +20,7 @@ module.exports = React.createClass({
 
 		return rd.article(
 			{
-				className: 'comment',
+				className: 'bendro-comment',
 				itemScope: true,
 				itemProp: c.responseTo ? 'comment' : null,
 				itemType: 'http://schema.org/Comment',
@@ -28,7 +28,7 @@ module.exports = React.createClass({
 			comps.commentHeader({comment: c}),
 			rd.div(
 				{
-					className: 'text',
+					className: 'bendro-comment__text',
 					itemProp: 'text',
 				},
 				c.text

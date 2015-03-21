@@ -12,7 +12,9 @@ module.exports = React.createClass({
 
 	render: function() {
 		return rd.div(
-			{},
+			{
+				className: 'bendro-comments',
+			},
 			comps.commentForm({
 				onSendComment: this.props.onSendComment,
 			}),

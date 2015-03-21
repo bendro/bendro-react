@@ -25,6 +25,7 @@ module.exports = React.createClass({
 					href: c.website,
 					rel: 'author,external',
 					itemProp: 'url',
+					className: 'bendro-comment-header__website',
 				},
 				a
 			)
@@ -32,21 +33,22 @@ module.exports = React.createClass({
 
 		return rd.span(
 			{
-				className: 'author',
 				itemScope: true,
 				itemType: 'http://schema.org/Person',
 				itemProp: 'author',
+				className: 'bendro-comment-header__author',
 			},
 			a
 		)
 	},
 
-	renderDate: function(time, type) {
+	renderDate: function(time, type, typeCss) {
 		return rd.time(
 			{
 				title: this.formatDate(time, 'datetime'),
 				dateTime: time,
 				itemProp: type,
+				className: 'bendro-comment-header__' + typeCss,
 			},
 			formattedRelative({value: time, style: 'numeric'})
 		)
@@ -56,14 +58,16 @@ module.exports = React.createClass({
 		var c = this.props.comment
 
 		return rd.header(
-			{},
+			{
+				className: 'bendro-comment-header',
+			},
 			formattedMessage({
 				message: c.ctime === c.mtime
 					? this.getIntlMessage('commentHeader')
 					: this.getIntlMessage('commentHeaderEdited'),
 				author: this.renderAuthor(c),
-				ctime: this.renderDate(c.ctime, 'dateCreated'),
-				mtime: this.renderDate(c.mtime, 'dateModified'),
+				ctime: this.renderDate(c.ctime, 'dateCreated', 'ctime'),
+				mtime: this.renderDate(c.mtime, 'dateModified', 'mtime'),
 			})
 		)
 	},

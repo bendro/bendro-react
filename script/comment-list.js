@@ -20,7 +20,9 @@ module.exports = React.createClass({
 		}.bind(this))
 
 		return rd.div(
-			{},
+			{
+				className: 'bendro-comment-list',
+			},
 			comments
 		)
 	},
