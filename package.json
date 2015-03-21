@@ -3,7 +3,12 @@
   "version": "0.0.0",
   "description": "",
   "main": "./script/comments.js",
-  "bundleLibs": ["react", "react-intl", "superagent"],
+  "bundleLibs": [
+    "react",
+    "react-intl",
+    "superagent",
+    "immutable"
+  ],
   "devDependencies": {
     "gulp": "~3.8.11",
     "browserify": "~9.0.3",
@@ -20,6 +25,7 @@
     "react-intl": "^1.2.0"
   },
   "dependencies": {
-    "superagent": "^0.21.0"
+    "superagent": "^0.21.0",
+    "immutable": "^3.6.0"
   }
 }
