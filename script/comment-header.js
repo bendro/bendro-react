@@ -16,13 +16,14 @@ module.exports = React.createClass({
 			{
 				itemProp: 'name',
 			},
-			c.author || this.getIntlMessage('anonymous')
+			c.get('author') || this.getIntlMessage('anonymous')
 		)
 
-		if(c.website) {
+		var website = c.get('website')
+		if(website) {
 			a = rd.a(
 				{
-					href: c.website,
+					href: website,
 					rel: 'author,external',
 					itemProp: 'url',
 					className: 'bendro-comment-header__website',
@@ -57,18 +58,20 @@ module.exports = React.createClass({
 
 	render: function() {
 		var c = this.props.comment
+		var ctime = c.get('ctime')
+		var mtime = c.get('mtime')
 
 		return rd.header(
 			{
 				className: 'bendro-comment-header',
 			},
 			formattedMessage({
-				message: c.ctime === c.mtime
+				message: ctime === mtime
 					? this.getIntlMessage('commentHeader')
 					: this.getIntlMessage('commentHeaderEdited'),
 				author: this.renderAuthor(c),
-				ctime: this.renderDate(c.ctime, 'dateCreated', 'ctime'),
-				mtime: this.renderDate(c.mtime, 'dateModified', 'mtime'),
+				ctime: this.renderDate(ctime, 'dateCreated', 'ctime'),
+				mtime: this.renderDate(mtime, 'dateModified', 'mtime'),
 			})
 		)
 	},

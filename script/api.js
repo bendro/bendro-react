@@ -1,5 +1,6 @@
 'use strict'
 var request = require('superagent')
+var immutable = require('immutable')
 
 function Api(apiUrl, site, options) {
 	if(!(this instanceof Api)) {
@@ -58,6 +59,16 @@ Api.prototype.getComments = function getComments(cb) {
 				cur = c
 			})
 
+			cs = cs.map(function removeParent(v) {
+				delete v.parent
+				if(v.children) {
+					v.children = v.children.map(removeParent)
+				}
+				return v
+			})
+
+			cs = immutable.fromJS(cs)
+
 			cb(null, {comments: cs})
 		})
 }
@@ -73,7 +84,7 @@ Api.prototype.postComment = function postComment(comment, cb) {
 				cb(err)
 			}
 
-			cb(null, res.body)
+			cb(null, new immutable.Map(res.body))
 		})
 }
 

@@ -11,7 +11,7 @@ module.exports = React.createClass({
 	mixins: [ReactIntl.IntlMixin],
 
 	onSendComment: function(comment) {
-		comment.responseTo = this.props.comment.id
+		comment.responseTo = this.props.comment.get('id')
 		this.props.onSendComment(comment)
 	},
 
@@ -22,7 +22,7 @@ module.exports = React.createClass({
 			{
 				className: 'bendro-comment',
 				itemScope: true,
-				itemProp: c.responseTo ? 'comment' : null,
+				itemProp: c.has('responseTo') ? 'comment' : null,
 				itemType: 'http://schema.org/Comment',
 			},
 			comps.commentHeader({comment: c}),
@@ -31,16 +31,16 @@ module.exports = React.createClass({
 					className: 'bendro-comment__text',
 					itemProp: 'text',
 				},
-				c.text
+				c.get('text')
 			),
 			comps.commentForm({
 				onSendComment: this.onSendComment,
 				defaultClosed: true,
 			}),
 			(
-				c.children ?
+				c.has('children') ?
 				comps.commentList({
-					comments: c.children,
+					comments: c.get('children'),
 					onSendComment: this.props.onSendComment,
 				}) :
 				null

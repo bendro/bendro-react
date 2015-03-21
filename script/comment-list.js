@@ -13,7 +13,7 @@ module.exports = React.createClass({
 	render: function() {
 		var comments = this.props.comments.map(function(c) {
 			return comps.comment({
-				key: c.id,
+				key: c.get('id'),
 				comment: c,
 				onSendComment: this.props.onSendComment,
 			})
