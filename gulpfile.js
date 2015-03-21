@@ -9,22 +9,23 @@ var cached = require('gulp-cached')
 
 function script(libs) {
 	var options
-	if(!libs)
+	if(!libs) {
 		options = {
 			entries: ['./script/main.js'],
 			standalone: 'comments',
 			bundleExternal: false,
 		}
-	else
+	} else {
 		options = {}
-
+	}
 	var b = browserify(options)
 
 	require('./package.json').bundleLibs.forEach(function(id) {
-		if(libs)
+		if(libs) {
 			b.require(id, {expose: id})
-		else
+		} else {
 			b.external(id)
+		}
 	})
 
 	return b.bundle()
@@ -60,6 +61,6 @@ gulp.task('style', function() {
 gulp.task('default', ['style', 'script', 'libs'])
 
 gulp.task('watch', function() {
-  gulp.watch('./script/**/*.js', ['script'])
-  gulp.watch('./style/**/*.less', ['style'])
+	gulp.watch('./script/**/*.js', ['script'])
+	gulp.watch('./style/**/*.less', ['style'])
 })
