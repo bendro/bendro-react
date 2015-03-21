@@ -1,13 +1,17 @@
 'use strict'
 var React = require('react')
 var ReactIntl = require('react-intl')
+var ImmutableRenderMixin = require('react-immutable-render-mixin')
 
 var rd = React.DOM
 
 module.exports = React.createClass({
 	displayName: 'CommentForm',
 
-	mixins: [ReactIntl.IntlMixin],
+	mixins: [
+		ReactIntl.IntlMixin,
+		ImmutableRenderMixin,
+	],
 
 	getInitialState: function() {
 		return {

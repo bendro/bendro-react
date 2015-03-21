@@ -1,6 +1,7 @@
 'use strict'
 var React = require('react')
 var ReactIntl = require('react-intl')
+var ImmutableRenderMixin = require('react-immutable-render-mixin')
 
 var formattedRelative = React.createFactory(ReactIntl.FormattedRelative)
 var formattedMessage = React.createFactory(ReactIntl.FormattedMessage)
@@ -9,7 +10,10 @@ var rd = React.DOM
 module.exports = React.createClass({
 	displayName: 'CommentHeader',
 
-	mixins: [ReactIntl.IntlMixin],
+	mixins: [
+		ReactIntl.IntlMixin,
+		ImmutableRenderMixin,
+	],
 
 	renderAuthor: function(c) {
 		var a = rd.span(
