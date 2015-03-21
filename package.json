@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "main": "./script/comments.js",
+  "bundleLibs": ["react", "react-intl", "superagent"],
   "devDependencies": {
     "gulp": "~3.8.11",
     "browserify": "~9.0.3",

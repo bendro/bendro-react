@@ -7,9 +7,6 @@ var vinylSourceStream = require('vinyl-source-stream')
 var eslint = require('gulp-eslint')
 var cached = require('gulp-cached')
 
-var extraLibs = [
-]
-
 function script(libs) {
 	var options
 	if(!libs)
@@ -23,7 +20,7 @@ function script(libs) {
 
 	var b = browserify(options)
 
-	getDeps().forEach(function(id) {
+	require('./package.json').bundleLibs.forEach(function(id) {
 		if(libs)
 			b.require(id, {expose: id})
 		else
@@ -59,13 +56,6 @@ gulp.task('style', function() {
 		.pipe(autoprefixer())
 		.pipe(gulp.dest('./build/'))
 })
-
-function getDeps() {
-	var ret = []
-	for(var k in require('./package.json').dependencies)
-		ret.push(k)
-	return ret.concat(extraLibs)
-}
 
 gulp.task('default', ['style', 'script', 'libs'])
 
