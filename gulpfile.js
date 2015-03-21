@@ -33,7 +33,7 @@ function script(libs) {
 }
 
 gulp.task('script-lint', function() {
-	return gulp.src(['./script/**/*.js', './.gulpfile.js'])
+	return gulp.src(['./script/**/*.js', './gulpfile.js'])
 		.pipe(cached('script-lint'))
 		.pipe(eslint())
 		.pipe(eslint.format())
