@@ -88,4 +88,33 @@ Api.prototype.postComment = function postComment(comment, cb) {
 		})
 }
 
+function addCommentToTree(comments, comment) {
+	if(comment.get('responseTo') === null) {
+		return comments.unshift(comment)
+	}
+
+	var responseTo = comment.get('responseTo')
+
+	return comments.map(function(c) {
+		if(responseTo === c.get('id')) {
+			return c.set(
+				'responses',
+				c.has('responses')
+				? c.get('responses').push(comment)
+				: new immutable.List([comment])
+			)
+		}
+
+		if(c.has('responses')) {
+			return c.set(
+				'responses',
+				addCommentToTree(c.get('responses'), comment)
+			)
+		}
+
+		return c
+	})
+}
+Api.addCommentToTree = addCommentToTree
+
 module.exports = Api

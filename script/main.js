@@ -38,10 +38,8 @@ module.exports = function renderComments(site, options, elem) {
 				throw err
 			}
 
-			// TODO: add to proper position
-			comp.setProps({
-				comments: comp.props.comments.concat([commentRes]),
-			})
+			var comments = Api.addCommentToTree(comp.props.comments, commentRes)
+			comp.setProps({comments: comments})
 		})
 	}
 
