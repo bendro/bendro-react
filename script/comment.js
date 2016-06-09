@@ -1,26 +1,24 @@
-'use strict'
-var React = require('react')
-var ReactIntl = require('react-intl')
-var ImmutableRenderMixin = require('react-immutable-render-mixin')
-var comps = require('./components.js')
+import React from 'react';
+import ReactIntl from 'react-intl';
+import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import * as comps from './components.js';
 
-var rd = React.DOM
+const rd = React.DOM;
 
-module.exports = React.createClass({
-	displayName: 'Comment',
-
-	mixins: [
+export default class Comment extends React.Component {
+	mixins = [
 		ReactIntl.IntlMixin,
 		ImmutableRenderMixin,
-	],
+	];
 
-	onSendComment: function(comment) {
-		comment.responseTo = this.props.comment.get('id')
-		this.props.onSendComment(comment)
-	},
+	onSendComment(comment) {
+		// eslint-disable-next-line no-param-reassign
+		comment.responseTo = this.props.comment.get('id');
+		this.props.onSendComment(comment);
+	}
 
-	render: function() {
-		var c = this.props.comment
+	render() {
+		const c = this.props.comment;
 
 		return rd.article(
 			{
@@ -50,6 +48,6 @@ module.exports = React.createClass({
 					})
 					: null
 			)
-		)
-	},
-})
+		);
+	}
+}

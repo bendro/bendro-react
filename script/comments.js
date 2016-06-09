@@ -1,28 +1,25 @@
-'use strict'
-var React = require('react')
-var ReactIntl = require('react-intl')
-var ImmutableRenderMixin = require('react-immutable-render-mixin')
-var comps = require('./components.js')
+import React from 'react';
+import ReactIntl from 'react-intl';
+import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import * as comps from './components.js';
 
-var rd = React.DOM
+const rd = React.DOM;
 
-module.exports = React.createClass({
-	displayName: 'Comments',
-
-	mixins: [
+export default class Comments extends React.Component {
+	mixins = [
 		ReactIntl.IntlMixin,
 		ImmutableRenderMixin,
-	],
+	];
 
-	render: function() {
-		var error = null
-		if(this.props.error) {
+	render() {
+		let error = null;
+		if (this.props.error) {
 			error = rd.div(
 				{
 					className: 'bendro-comments__error',
 				},
 				this.props.error
-			)
+			);
 		}
 
 		return rd.div(
@@ -38,6 +35,6 @@ module.exports = React.createClass({
 				comments: this.props.comments,
 				onSendComment: this.props.onSendComment,
 			})
-		)
-	},
-})
+		);
+	}
+}

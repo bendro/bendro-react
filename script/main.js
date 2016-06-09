@@ -1,20 +1,16 @@
-'use strict'
-var React = require('react')
-var comps = require('./components.js')
-var Api = require('./api.js')
+import ReactDOM from 'react-dom';
+import * as comps from './components.js';
+import Api from './api.js';
+import './locales/de';
 
-require('./locales/de')
+export default function renderComments(site, options, elem) {
+	const conn = new Api(options.url, site);
 
-module.exports = function renderComments(site, options, elem) {
-	var conn = new Api(options.url, site)
-
-	var comp
-
-	var props = {
+	const props = {
 		comments: [],
-	}
+	};
 
-	props.locales = 'de'
+	props.locales = 'de';
 	props.formats = {
 		date: {
 			datetime: {
@@ -25,49 +21,50 @@ module.exports = function renderComments(site, options, elem) {
 				minute: '2-digit',
 			},
 		},
-	}
+	};
 	props.messages = {
 		anonymous: 'Anonymus',
 		commentHeader: '{author} schrieb {ctime}',
 		commentHeaderEdited: '{author} schrieb {ctime} (bearbeitet {mtime})',
-	}
+	};
 
-	props.onSendComment = function(comment) {
-		conn.postComment(comment, function(err, commentRes) {
-			var comments
-			if(err) {
-				if(comment.responseTo) {
+	let comp;
+
+	props.onSendComment = comment => {
+		conn.postComment(comment, (err, commentRes) => {
+			let comments;
+			if (err) {
+				if (comment.responseTo) {
 					comments = Api.editCommentById(
 						comp.props.comments,
 						comment.responseTo,
-						function(c) {
-							return c.set('formError', 'Fehler beim Senden des Kommentars')
-						}
-					)
+						c => c.set('formError', 'Fehler beim Senden des Kommentars')
+					);
 				} else {
-					comp.setProps({formError: 'Fehler beim Senden des Kommentars'})
+					comp.setProps({formError: 'Fehler beim Senden des Kommentars'});
 				}
 
-				console.error('error on posting a comment (', comment, '):', err)
+				console.error('error on posting a comment (', comment, '):', err);
 			} else {
-				comments = Api.addCommentToTree(comp.props.comments, commentRes)
+				comments = Api.addCommentToTree(comp.props.comments, commentRes);
 			}
 
-			comp.setProps({comments: comments})
-		})
-	}
+			comp.setProps({comments});
+		});
+	};
 
-	comp = React.render(comps.comments(props), elem)
+	// eslint-disable-next-line prefer-const
+	comp = ReactDOM.render(comps.comments(props), elem);
 
-	conn.getComments(function(err, res) {
-		if(err) {
-			comp.setProps({error: 'Fehler beim Laden der Kommentare'})
-			console.error('error on loading comments:', err)
-			return
+	conn.getComments((err, res) => {
+		if (err) {
+			comp.setProps({error: 'Fehler beim Laden der Kommentare'});
+			console.error('error on loading comments:', err);
+			return;
 		}
 
-		comp.setProps({comments: res.comments})
-	})
+		comp.setProps({comments: res.comments});
+	});
 
-	return comp
+	return comp;
 }

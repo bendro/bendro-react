@@ -1,125 +1,120 @@
-'use strict'
-var request = require('superagent')
-var immutable = require('immutable')
+import request from 'superagent';
+import immutable from 'immutable';
 
-function Api(apiUrl, site, options) {
-	if(!(this instanceof Api)) {
-		return new Api(apiUrl, site, options)
-	}
+/* eslint-disable no-param-reassign */
 
-	if('production' !== process.env.NODE_ENV) {
-		if('string' !== typeof apiUrl) {
-			throw new Error('"apiUrl" is not a string')
-		}
-
-		if(-1 === apiUrl.indexOf('/', apiUrl.length - 1)) {
-			throw new Error('"apiUrl" ends not with a "/"')
-		}
-
-		if('string' !== typeof site) {
-			throw new Error('"site" is not a string')
-		}
-
-		if(options && 'object' !== typeof options) {
-			throw new Error('optional argument "options" is not a object')
-		}
-	}
-
-	this.apiUrl = apiUrl
-	this.site = site
-	this.options = options || {}
-}
-
-Api.prototype.getComments = function getComments(cb) {
-	request
-		.get(this.apiUrl + 'comments')
-		.query({site: this.site})
-		.end(function(err, res) {
-			if(err) {
-				cb(err)
+export default class Api {
+	constructor(apiUrl, site, options) {
+		if ('production' !== process.env.NODE_ENV) {
+			if ('string' !== typeof apiUrl) {
+				throw new Error('"apiUrl" is not a string');
 			}
 
-			var cs = []
-			var cur = null
-
-			res.body.forEach(function(c) {
-				if(0 === c.left) {
-					cs.push(c)
-					cur = c
-					return
-				}
-
-				while(cur.right < c.right) {
-					cur = cur.parent
-				}
-
-				c.parent = cur
-				cur.responses = cur.responses || []
-				cur.responses.push(c)
-				cur = c
-			})
-
-			cs = cs.map(function removeParent(v) {
-				delete v.parent
-				if(v.responses) {
-					v.responses = v.responses.map(removeParent)
-				}
-				return v
-			})
-
-			cs = immutable.fromJS(cs)
-
-			cb(null, {comments: cs})
-		})
-}
-
-Api.prototype.postComment = function postComment(comment, cb) {
-	comment.site = this.site
-
-	request
-		.post(this.apiUrl + 'comment')
-		.send(comment)
-		.end(function(err, res) {
-			if(err) {
-				return cb(err)
+			if (-1 === apiUrl.indexOf('/', apiUrl.length - 1)) {
+				throw new Error('"apiUrl" ends not with a "/"');
 			}
 
-			cb(null, new immutable.Map(res.body))
-		})
-}
+			if ('string' !== typeof site) {
+				throw new Error('"site" is not a string');
+			}
 
-function addCommentToTree(comments, comment) {
-	if(comment.get('responseTo') === null) {
-		return comments.unshift(comment)
-	}
-
-	return editCommentById(comments, comment.get('responseTo'), function(c) {
-		return c.set(
-			'responses',
-			c.has('responses')
-				? c.get('responses').push(comment)
-				: new immutable.List([comment])
-		)
-	})
-}
-Api.addCommentToTree = addCommentToTree
-
-function editCommentById(comments, id, cb) {
-	return comments.map(function(c) {
-		if(id === c.get('id')) {
-			return cb(c)
+			if (options && 'object' !== typeof options) {
+				throw new Error('optional argument "options" is not a object');
+			}
 		}
 
-		if(c.has('responses')) {
-			return c.set(
+		this.apiUrl = apiUrl;
+		this.site = site;
+		this.options = options || {};
+	}
+
+	getComments(cb) {
+		request
+			.get(`${this.apiUrl}comments`)
+			.query({site: this.site})
+			.end((err, res) => {
+				if (err) {
+					cb(err);
+				}
+
+				let cs = [];
+				let cur = null;
+
+				res.body.forEach(c => {
+					if (0 === c.left) {
+						cs.push(c);
+						cur = c;
+						return;
+					}
+
+					while (cur.right < c.right) {
+						cur = cur.parent;
+					}
+
+					c.parent = cur;
+					cur.responses = cur.responses || [];
+					cur.responses.push(c);
+					cur = c;
+				});
+
+				cs = cs.map(function removeParent(v) {
+					delete v.parent;
+					if (v.responses) {
+						v.responses = v.responses.map(removeParent);
+					}
+					return v;
+				});
+
+				cs = immutable.fromJS(cs);
+
+				cb(null, {comments: cs});
+			});
+	}
+
+	postComment(comment, cb) {
+		comment.site = this.site;
+
+		request
+			.post(`${this.apiUrl}comment`)
+			.send(comment)
+			.end((err, res) => {
+				if (err) {
+					return cb(err);
+				}
+
+				return cb(null, new immutable.Map(res.body));
+			});
+	}
+
+	addCommentToTree(comments, comment) {
+		if (comment.get('responseTo') === null) {
+			return comments.unshift(comment);
+		}
+
+		return this.editCommentById(comments, comment.get('responseTo'), c =>
+			c.set(
 				'responses',
-				editCommentById(c.get('responses'), id, cb)
+				c.has('responses')
+					? c.get('responses').push(comment)
+					: new immutable.List([comment])
 			)
-		}
+		);
+	}
 
-		return c
-	})
+	editCommentById(comments, id, cb) {
+		return comments.map(c => {
+			if (id === c.get('id')) {
+				return cb(c);
+			}
+
+			if (c.has('responses')) {
+				return c.set(
+					'responses',
+					this.editCommentById(c.get('responses'), id, cb)
+				);
+			}
+
+			return c;
+		});
+	}
 }
-Api.editCommentById = editCommentById
-
-module.exports = Api

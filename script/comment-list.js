@@ -1,33 +1,28 @@
-'use strict'
-var React = require('react')
-var ReactIntl = require('react-intl')
-var ImmutableRenderMixin = require('react-immutable-render-mixin')
-var comps = require('./components.js')
+import React from 'react';
+import ReactIntl from 'react-intl';
+import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import {comment} from './components.js';
 
-var rd = React.DOM
+const rd = React.DOM;
 
-module.exports = React.createClass({
-	displayName: 'CommentList',
-
-	mixins: [
+export default class CommentList extends React.Component {
+	mixins = [
 		ReactIntl.IntlMixin,
 		ImmutableRenderMixin,
-	],
+	];
 
-	render: function() {
-		var comments = this.props.comments.map(function(c) {
-			return comps.comment({
-				key: c.get('id'),
-				comment: c,
-				onSendComment: this.props.onSendComment,
-			})
-		}.bind(this))
+	render() {
+		const comments = this.props.comments.map(c => comment({
+			key: c.get('id'),
+			comment: c,
+			onSendComment: this.props.onSendComment,
+		}));
 
 		return rd.div(
 			{
 				className: 'bendro-comment-list',
 			},
 			comments
-		)
-	},
-})
+		);
+	}
+}

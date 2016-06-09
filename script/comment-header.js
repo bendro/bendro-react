@@ -1,30 +1,27 @@
-'use strict'
-var React = require('react')
-var ReactIntl = require('react-intl')
-var ImmutableRenderMixin = require('react-immutable-render-mixin')
+import React from 'react';
+import ReactIntl from 'react-intl';
+import ImmutableRenderMixin from 'react-immutable-render-mixin';
 
-var formattedRelative = React.createFactory(ReactIntl.FormattedRelative)
-var formattedMessage = React.createFactory(ReactIntl.FormattedMessage)
-var rd = React.DOM
+const formattedRelative = React.createFactory(ReactIntl.FormattedRelative);
+const formattedMessage = React.createFactory(ReactIntl.FormattedMessage);
+const rd = React.DOM;
 
-module.exports = React.createClass({
-	displayName: 'CommentHeader',
-
-	mixins: [
+export default class CommentHeader extends React.Component {
+	mixins = [
 		ReactIntl.IntlMixin,
 		ImmutableRenderMixin,
-	],
+	];
 
-	renderAuthor: function(c) {
-		var a = rd.span(
+	renderAuthor(c) {
+		let a = rd.span(
 			{
 				itemProp: 'name',
 			},
 			c.get('author') || this.getIntlMessage('anonymous')
-		)
+		);
 
-		var website = c.get('website')
-		if(website) {
+		const website = c.get('website');
+		if (website) {
 			a = rd.a(
 				{
 					href: website,
@@ -34,7 +31,7 @@ module.exports = React.createClass({
 					target: 'bendro-author',
 				},
 				a
-			)
+			);
 		}
 
 		return rd.span(
@@ -45,25 +42,25 @@ module.exports = React.createClass({
 				className: 'bendro-comment-header__author',
 			},
 			a
-		)
-	},
+		);
+	}
 
-	renderDate: function(time, type, typeCss) {
+	renderDate(time, type, typeCss) {
 		return rd.time(
 			{
 				title: this.formatDate(time, 'datetime'),
 				dateTime: time,
 				itemProp: type,
-				className: 'bendro-comment-header__' + typeCss,
+				className: `bendro-comment-header__ ${typeCss}`,
 			},
 			formattedRelative({value: time, style: 'numeric'})
-		)
-	},
+		);
+	}
 
-	render: function() {
-		var c = this.props.comment
-		var ctime = c.get('ctime')
-		var mtime = c.get('mtime')
+	render() {
+		const c = this.props.comment;
+		const ctime = c.get('ctime');
+		const mtime = c.get('mtime');
 
 		return rd.header(
 			{
@@ -77,6 +74,6 @@ module.exports = React.createClass({
 				ctime: this.renderDate(ctime, 'dateCreated', 'ctime'),
 				mtime: this.renderDate(mtime, 'dateModified', 'mtime'),
 			})
-		)
-	},
-})
+		);
+	}
+}

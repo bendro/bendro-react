@@ -1,52 +1,49 @@
-'use strict'
-var React = require('react')
-var ReactIntl = require('react-intl')
-var ImmutableRenderMixin = require('react-immutable-render-mixin')
+import React from 'react';
+import ReactIntl from 'react-intl';
+import ImmutableRenderMixin from 'react-immutable-render-mixin';
 
-var rd = React.DOM
+const rd = React.DOM;
 
-module.exports = React.createClass({
-	displayName: 'CommentForm',
-
-	mixins: [
+export default class CommentForm extends React.Component {
+	mixins = [
 		ReactIntl.IntlMixin,
 		ImmutableRenderMixin,
-	],
+	];
 
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			text: '',
 			author: '',
 			email: '',
 			website: '',
 			activated: !this.props.defaultClosed,
-		}
-	},
+		};
+	}
 
-	onTextChange: function(e) {
-		this.setState({text: e.target.value})
-	},
+	onTextChange(e) {
+		this.setState({text: e.target.value});
+	}
 
-	onAuthorChange: function(e) {
-		this.setState({author: e.target.value})
-	},
+	onAuthorChange(e) {
+		this.setState({author: e.target.value});
+	}
 
-	onEmailChange: function(e) {
-		this.setState({email: e.target.value})
-	},
+	onEmailChange(e) {
+		this.setState({email: e.target.value});
+	}
 
-	onWebsiteChange: function(e) {
-		this.setState({website: e.target.value})
-	},
+	onWebsiteChange(e) {
+		this.switchetState({website: e.target.value});
+	}
 
-	onSendClick: function() {
-		var comment = {
+	onSendClick() {
+		const comment = {
 			text: this.state.text,
 			author: this.state.author,
 			email: this.state.email,
 			website: this.state.website,
-		}
-		this.props.onSendComment(comment)
+		};
+		this.props.onSendComment(comment);
 
 		this.setState({
 			text: '',
@@ -54,35 +51,35 @@ module.exports = React.createClass({
 			email: '',
 			website: '',
 			activated: !this.props.defaultClosed,
-		})
-	},
+		});
+	}
 
-	onActivateClick: function(e) {
-		e.preventDefault()
-		this.setState({activated: true})
-	},
+	onActivateClick(e) {
+		e.preventDefault();
+		this.setState({activated: true});
+	}
 
-	onDeactivateClick: function(e) {
-		e.preventDefault()
-		this.setState({activated: false})
-	},
+	onDeactivateClick(e) {
+		e.preventDefault();
+		this.setState({activated: false});
+	}
 
-	render: function() {
-		var content
+	render() {
+		let content;
 
-		if(this.state.activated) {
+		if (this.state.activated) {
 			content = rd.div(
 				{},
 				(
 					this.props.defaultClosed
 					? rd.a(
-							{
-								onClick: this.onDeactivateClick,
-								href: '#',
-								className: 'bendro-comment-form__deactivate',
-							},
-							'schließen'
-						)
+						{
+							onClick: this.onDeactivateClick,
+							href: '#',
+							className: 'bendro-comment-form__deactivate',
+						},
+						'schließen'
+					)
 					: null
 				),
 				rd.textarea({
@@ -119,7 +116,7 @@ module.exports = React.createClass({
 					},
 					'senden'
 				)
-			)
+			);
 		} else {
 			content = rd.a(
 				{
@@ -128,17 +125,17 @@ module.exports = React.createClass({
 					className: 'bendro-comment-form__activate',
 				},
 				'antworten'
-			)
+			);
 		}
 
-		var error = null
-		if(this.props.error) {
+		let error = null;
+		if (this.props.error) {
 			error = rd.div(
 				{
 					className: 'bendro-comment-form__error',
 				},
 				this.props.error
-			)
+			);
 		}
 
 		return rd.div(
@@ -147,6 +144,6 @@ module.exports = React.createClass({
 			},
 			error,
 			content
-		)
-	},
-})
+		);
+	}
+}
