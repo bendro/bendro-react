@@ -18,7 +18,6 @@ function script(libs) {
 		options = {
 			entries: ['./script/main.js'],
 			standalone: 'comments',
-			bundleExternal: false,
 		};
 	} else {
 		options = {};

@@ -1,7 +1,12 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
-import * as comps from './components.js';
+import Comments from './comments.js';
 import Api from './api.js';
-import './locales/de';
+// import './locales/de';
+import localeDe from 'react-intl/locale-data/de';
+import {addLocaleData, IntlProvider} from 'react-intl';
+
+addLocaleData(localeDe);
 
 export default function renderComments(site, options, elem) {
 	const conn = new Api(options.url, site);
@@ -10,25 +15,22 @@ export default function renderComments(site, options, elem) {
 		comments: [],
 	};
 
-	props.locales = 'de';
-	props.formats = {
-		date: {
-			datetime: {
-				year: 'numeric',
-				month: 'short',
-				day: 'numeric',
-				hour: '2-digit',
-				minute: '2-digit',
-			},
-		},
-	};
-	props.messages = {
+	const messages = {
 		anonymous: 'Anonymus',
 		commentHeader: '{author} schrieb {ctime}',
 		commentHeaderEdited: '{author} schrieb {ctime} (bearbeitet {mtime})',
 	};
 
-	let comp;
+	function render() {
+		ReactDOM.render(
+			(
+				<IntlProvider locale="de" messages={messages}>
+					<Comments {...props} />
+				</IntlProvider>
+			),
+			elem
+		);
+	}
 
 	props.onSendComment = comment => {
 		conn.postComment(comment, (err, commentRes) => {
@@ -36,35 +38,34 @@ export default function renderComments(site, options, elem) {
 			if (err) {
 				if (comment.responseTo) {
 					comments = Api.editCommentById(
-						comp.props.comments,
+						props.comments,
 						comment.responseTo,
 						c => c.set('formError', 'Fehler beim Senden des Kommentars')
 					);
 				} else {
-					comp.setProps({formError: 'Fehler beim Senden des Kommentars'});
+					props.formError = 'Fehler beim Senden des Kommentars';
 				}
 
 				console.error('error on posting a comment (', comment, '):', err);
 			} else {
-				comments = Api.addCommentToTree(comp.props.comments, commentRes);
+				comments = Api.addCommentToTree(props.comments, commentRes);
 			}
 
-			comp.setProps({comments});
+			props.comments = comments;
+
+			render();
 		});
 	};
 
-	// eslint-disable-next-line prefer-const
-	comp = ReactDOM.render(comps.comments(props), elem);
+	render();
 
 	conn.getComments((err, res) => {
 		if (err) {
-			comp.setProps({error: 'Fehler beim Laden der Kommentare'});
+			props.error = 'Fehler beim Laden der Kommentare';
 			console.error('error on loading comments:', err);
-			return;
+		} else {
+			props.comments = res.comments;
 		}
-
-		comp.setProps({comments: res.comments});
+		render();
 	});
-
-	return comp;
 }

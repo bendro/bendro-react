@@ -1,11 +1,12 @@
 import React from 'react';
-import ReactIntl from 'react-intl';
+import {default as ReactIntl, injectIntl} from 'react-intl';
 import {immutableRenderDecorator} from 'react-immutable-render-mixin';
 
 const formattedRelative = React.createFactory(ReactIntl.FormattedRelative);
 const formattedMessage = React.createFactory(ReactIntl.FormattedMessage);
 const rd = React.DOM;
 
+@injectIntl
 @immutableRenderDecorator
 export default class CommentHeader extends React.Component {
 	renderAuthor(c) {
@@ -13,7 +14,7 @@ export default class CommentHeader extends React.Component {
 			{
 				itemProp: 'name',
 			},
-			c.get('author') || this.getIntlMessage('anonymous')
+			c.get('author') || formattedMessage({id: 'anonymous'})
 		);
 
 		const website = c.get('website');
@@ -44,7 +45,7 @@ export default class CommentHeader extends React.Component {
 	renderDate(time, type, typeCss) {
 		return rd.time(
 			{
-				title: this.formatDate(time, 'datetime'),
+				title: this.props.intl.formatDate(time, 'datetime'),
 				dateTime: time,
 				itemProp: type,
 				className: `bendro-comment-header__ ${typeCss}`,
@@ -63,12 +64,12 @@ export default class CommentHeader extends React.Component {
 				className: 'bendro-comment-header',
 			},
 			formattedMessage({
-				message: ctime === mtime
-					? this.getIntlMessage('commentHeader')
-					: this.getIntlMessage('commentHeaderEdited'),
-				author: this.renderAuthor(c),
-				ctime: this.renderDate(ctime, 'dateCreated', 'ctime'),
-				mtime: this.renderDate(mtime, 'dateModified', 'mtime'),
+				id: ctime === mtime ? 'commentHeader' : 'commentHeaderEdited',
+				values: {
+					author: this.renderAuthor(c),
+					ctime: this.renderDate(ctime, 'dateCreated', 'ctime'),
+					mtime: this.renderDate(mtime, 'dateModified', 'mtime'),
+				},
 			})
 		);
 	}

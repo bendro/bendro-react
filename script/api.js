@@ -34,7 +34,7 @@ export default class Api {
 			.query({site: this.site})
 			.end((err, res) => {
 				if (err) {
-					cb(err);
+					return cb(err);
 				}
 
 				let cs = [];
@@ -68,6 +68,8 @@ export default class Api {
 				cs = immutable.fromJS(cs);
 
 				cb(null, {comments: cs});
+
+				return undefined;
 			});
 	}
 

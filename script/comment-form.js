@@ -5,13 +5,14 @@ const rd = React.DOM;
 
 @immutableRenderDecorator
 export default class CommentForm extends React.Component {
-	getInitialState() {
-		return {
+	constructor(props) {
+		super(props);
+		this.state = {
 			text: '',
 			author: '',
 			email: '',
 			website: '',
-			activated: !this.props.defaultClosed,
+			activated: !props.defaultClosed,
 		};
 	}
 
