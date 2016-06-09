@@ -1,16 +1,11 @@
 import React from 'react';
-import ReactIntl from 'react-intl';
-import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import {immutableRenderDecorator} from 'react-immutable-render-mixin';
 import * as comps from './components.js';
 
 const rd = React.DOM;
 
+@immutableRenderDecorator
 export default class Comment extends React.Component {
-	mixins = [
-		ReactIntl.IntlMixin,
-		ImmutableRenderMixin,
-	];
-
 	onSendComment(comment) {
 		// eslint-disable-next-line no-param-reassign
 		comment.responseTo = this.props.comment.get('id');

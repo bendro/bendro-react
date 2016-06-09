@@ -1,13 +1,15 @@
 import gulp from 'gulp';
 import lazyReq from 'lazyreq';
 
-const $ = lazyReq({
+const $ = lazyReq(require, {
 	less: 'gulp-less',
 	autoprefixer: 'gulp-autoprefixer',
 	browserify: 'browserify',
+	babelify: 'babelify',
 	vinylSourceStream: 'vinyl-source-stream',
 	eslint: 'gulp-eslint',
 	cached: 'gulp-cached',
+	bundleLibs: ['./package.json', 'bundleLibs'],
 });
 
 function script(libs) {
@@ -23,10 +25,24 @@ function script(libs) {
 	}
 	const b = $.browserify(options);
 
-	require('./package.json').bundleLibs.forEach(id => {
-		if (libs) b.require(id, {expose: id});
-		else b.external(id);
-	});
+	$.bundleLibs.forEach(libs ? id => b.require(id, {expose: id}) : id => b.external(id));
+
+	if (!libs) {
+		b.transform($.babelify, {
+			babelrc: false,
+			presets: [
+				'es2015',
+				'react',
+			],
+			plugins: [
+				'transform-async-to-generator',
+				'transform-function-bind',
+				'transform-runtime',
+				'transform-decorators-legacy',
+				'transform-class-properties',
+			],
+		});
+	}
 
 	return b.bundle()
 		.pipe($.vinylSourceStream(libs ? 'libs.js' : 'main.js'))

@@ -1,15 +1,10 @@
 import React from 'react';
-import ReactIntl from 'react-intl';
-import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import {immutableRenderDecorator} from 'react-immutable-render-mixin';
 
 const rd = React.DOM;
 
+@immutableRenderDecorator
 export default class CommentForm extends React.Component {
-	mixins = [
-		ReactIntl.IntlMixin,
-		ImmutableRenderMixin,
-	];
-
 	getInitialState() {
 		return {
 			text: '',

@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactIntl from 'react-intl';
-import ImmutableRenderMixin from 'react-immutable-render-mixin';
+import {immutableRenderDecorator} from 'react-immutable-render-mixin';
 
 const formattedRelative = React.createFactory(ReactIntl.FormattedRelative);
 const formattedMessage = React.createFactory(ReactIntl.FormattedMessage);
 const rd = React.DOM;
 
+@immutableRenderDecorator
 export default class CommentHeader extends React.Component {
-	mixins = [
-		ReactIntl.IntlMixin,
-		ImmutableRenderMixin,
-	];
-
 	renderAuthor(c) {
 		let a = rd.span(
 			{
