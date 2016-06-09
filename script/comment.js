@@ -1,8 +1,9 @@
 import React from 'react';
 import {immutableRenderDecorator} from 'react-immutable-render-mixin';
-import * as comps from './components.js';
+import CommentHeader from './comment-header';
+import CommentForm from './comment-form';
+import CommentList from './comment-list';
 
-const rd = React.DOM;
 
 @immutableRenderDecorator
 export default class Comment extends React.Component {
@@ -15,34 +16,39 @@ export default class Comment extends React.Component {
 	render() {
 		const c = this.props.comment;
 
-		return rd.article(
-			{
-				className: 'bendro-comment',
-				itemScope: true,
-				itemProp: c.has('responseTo') ? 'comment' : null,
-				itemType: 'http://schema.org/Comment',
-			},
-			comps.commentHeader({comment: c}),
-			rd.div(
-				{
-					className: 'bendro-comment__text',
-					itemProp: 'text',
-				},
-				c.get('text')
-			),
-			comps.commentForm({
-				onSendComment: this.onSendComment,
-				defaultClosed: true,
-				error: c.get('formError'),
-			}),
-			(
-				c.has('responses')
-					? comps.commentList({
-						comments: c.get('responses'),
-						onSendComment: this.props.onSendComment,
-					})
-					: null
-			)
+		let list = null;
+		if (c.has('responses')) {
+			list = (
+				<CommentList
+					comments={c.get('responses')}
+					onSendComment={this.props.onSendComment}
+				/>
+			);
+		}
+
+		return (
+			<article
+				className="bendro-comment"
+				itemScope
+				itemProp={c.has('responseTo') ? 'comment' : null}
+				itemType="http://schema.org/Comment"
+			>
+				<CommentHeader comment={c} />
+
+				<div
+					className="bendro-comment__text"
+					itemProp="text"
+				>{c.get('text')}</div>
+
+				<CommentForm
+					onSendComment={this::this.onSendComment}
+					defaultClosed
+					error={c.get('formError')}
+				/>
+
+				{list}
+
+			</article>
 		);
 	}
 }

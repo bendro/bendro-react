@@ -1,23 +1,18 @@
 import React from 'react';
 import {immutableRenderDecorator} from 'react-immutable-render-mixin';
-import {comment} from './components.js';
-
-const rd = React.DOM;
+import Comment from './comment';
 
 @immutableRenderDecorator
 export default class CommentList extends React.Component {
 	render() {
-		const comments = this.props.comments.map(c => comment({
-			key: c.get('id'),
-			comment: c,
-			onSendComment: this.props.onSendComment,
-		}));
+		const comments = this.props.comments.map(c => (
+			<Comment
+				key={c.get('id')}
+				comment={c}
+				onSendComment={this.props.onSendComment}
+			/>
+		));
 
-		return rd.div(
-			{
-				className: 'bendro-comment-list',
-			},
-			comments
-		);
+		return <div className="bendro-comment-list">{comments}</div>;
 	}
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Comments from './comments.js';
-import Api from './api.js';
-// import './locales/de';
+import {default as Api, addCommentToTree, editCommentById} from './api.js';
 import localeDe from 'react-intl/locale-data/de';
 import {addLocaleData, IntlProvider} from 'react-intl';
+import immutable from 'immutable';
 
 addLocaleData(localeDe);
 
@@ -12,7 +12,7 @@ export default function renderComments(site, options, elem) {
 	const conn = new Api(options.url, site);
 
 	const props = {
-		comments: [],
+		comments: new immutable.List(),
 	};
 
 	const messages = {
@@ -37,7 +37,7 @@ export default function renderComments(site, options, elem) {
 			let comments;
 			if (err) {
 				if (comment.responseTo) {
-					comments = Api.editCommentById(
+					comments = editCommentById(
 						props.comments,
 						comment.responseTo,
 						c => c.set('formError', 'Fehler beim Senden des Kommentars')
@@ -48,7 +48,7 @@ export default function renderComments(site, options, elem) {
 
 				console.error('error on posting a comment (', comment, '):', err);
 			} else {
-				comments = Api.addCommentToTree(props.comments, commentRes);
+				comments = addCommentToTree(props.comments, commentRes);
 			}
 
 			props.comments = comments;

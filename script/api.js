@@ -87,36 +87,36 @@ export default class Api {
 				return cb(null, new immutable.Map(res.body));
 			});
 	}
+}
 
-	addCommentToTree(comments, comment) {
-		if (comment.get('responseTo') === null) {
-			return comments.unshift(comment);
+export function editCommentById(comments, id, cb) {
+	return comments.map(c => {
+		if (id === c.get('id')) {
+			return cb(c);
 		}
 
-		return this.editCommentById(comments, comment.get('responseTo'), c =>
-			c.set(
+		if (c.has('responses')) {
+			return c.set(
 				'responses',
-				c.has('responses')
-					? c.get('responses').push(comment)
-					: new immutable.List([comment])
-			)
-		);
+				editCommentById(c.get('responses'), id, cb)
+			);
+		}
+
+		return c;
+	});
+}
+
+export function addCommentToTree(comments, comment) {
+	if (comment.get('responseTo') === null) {
+		return comments.unshift(comment);
 	}
 
-	editCommentById(comments, id, cb) {
-		return comments.map(c => {
-			if (id === c.get('id')) {
-				return cb(c);
-			}
-
-			if (c.has('responses')) {
-				return c.set(
-					'responses',
-					this.editCommentById(c.get('responses'), id, cb)
-				);
-			}
-
-			return c;
-		});
-	}
+	return editCommentById(comments, comment.get('responseTo'), c =>
+		c.set(
+			'responses',
+			c.has('responses')
+				? c.get('responses').push(comment)
+				: new immutable.List([comment])
+		)
+	);
 }

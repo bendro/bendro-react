@@ -1,8 +1,6 @@
 import React from 'react';
 import {immutableRenderDecorator} from 'react-immutable-render-mixin';
 
-const rd = React.DOM;
-
 @immutableRenderDecorator
 export default class CommentForm extends React.Component {
 	constructor(props) {
@@ -64,82 +62,65 @@ export default class CommentForm extends React.Component {
 		let content;
 
 		if (this.state.activated) {
-			content = rd.div(
-				{},
-				(
-					this.props.defaultClosed
-					? rd.a(
-						{
-							onClick: this.onDeactivateClick,
-							href: '#',
-							className: 'bendro-comment-form__deactivate',
-						},
-						'schließen'
-					)
-					: null
-				),
-				rd.textarea({
-					onChange: this.onTextChange,
-					value: this.state.text,
-					placeholder: 'Kommentartext hier eintippen',
-					className: 'bendro-comment-form__text',
-				}),
-				rd.input({
-					onChange: this.onAuthorChange,
-					value: this.state.author,
-					placeholder: 'Name (optional)',
-					type: 'text',
-					className: 'bendro-comment-form__author',
-				}),
-				rd.input({
-					onChange: this.onEmailChange,
-					value: this.state.email,
-					placeholder: 'Email (optional)',
-					type: 'email',
-					className: 'bendro-comment-form__email',
-				}),
-				rd.input({
-					onChange: this.onWebsiteChange,
-					value: this.state.website,
-					placeholder: 'Webseite (optional)',
-					type: 'url',
-					className: 'bendro-comment-form__website',
-				}),
-				rd.button(
+			content = (
+				<div>
 					{
-						onClick: this.onSendClick,
-						className: 'bendro-comment-form__send',
-					},
-					'senden'
-				)
+						this.props.defaultClosed ? (
+							<a
+								onClick={this::this.onDeactivateClick}
+								href="#"
+								className="bendro-comment-form__deactivate"
+							>schließen</a>
+						) : null
+					}
+					<textarea
+						onChange={this::this.onTextChange}
+						value={this.state.text}
+						placeholder="Kommentartext hier eintippen"
+						className="bendro-comment-form__text"
+					/>
+					<input
+						onChange={this::this.onAuthorChange}
+						value={this.state.author}
+						placeholder="Name (optional)"
+						type="text"
+						className="bendro-comment-form__author"
+					/>
+					<input
+						onChange={this::this.onEmailChange}
+						value={this.state.email}
+						placeholder="Email (optional)"
+						type="email"
+						className="bendro-comment-form__email"
+					/>
+					<input
+						onChange={this::this.onWebsiteChange}
+						value={this.state.website}
+						placeholder="Webseite (optional)"
+						type="url"
+						className="bendro-comment-form__website"
+					/>
+					<button
+						onClick={this::this.onSendClick}
+						className="bendro-comment-form__send"
+					>senden</button>
+				</div>
 			);
 		} else {
-			content = rd.a(
-				{
-					onClick: this.onActivateClick,
-					href: '#',
-					className: 'bendro-comment-form__activate',
-				},
-				'antworten'
+			content = (
+				<a
+					onClick={this::this.onActivateClick}
+					href="#"
+					className="bendro-comment-form__activate"
+				>antworten</a>
 			);
 		}
 
 		let error = null;
 		if (this.props.error) {
-			error = rd.div(
-				{
-					className: 'bendro-comment-form__error',
-				},
-				this.props.error
-			);
+			error = <div className="bendro-comment-form__error">{this.props.error}</div>;
 		}
 
-		return rd.div(
-			{
-				className: 'bendro-comment-form',
-			},
-			error,
-			content
-		);
+		return <div className="bendro-comment-form">{error} {content}</div>;
 	}
 }
