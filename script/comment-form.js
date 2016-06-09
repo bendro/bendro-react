@@ -131,10 +131,21 @@ module.exports = React.createClass({
 			)
 		}
 
+		var error = null
+		if(this.props.error) {
+			error = rd.div(
+				{
+					className: 'bendro-comment-form__error',
+				},
+				this.props.error
+			)
+		}
+
 		return rd.div(
 			{
 				className: 'bendro-comment-form',
 			},
+			error,
 			content
 		)
 	},

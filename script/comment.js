@@ -40,14 +40,15 @@ module.exports = React.createClass({
 			comps.commentForm({
 				onSendComment: this.onSendComment,
 				defaultClosed: true,
+				error: c.get('formError'),
 			}),
 			(
 				c.has('responses')
-				? comps.commentList({
-					comments: c.get('responses'),
-					onSendComment: this.props.onSendComment,
-				})
-				: null
+					? comps.commentList({
+						comments: c.get('responses'),
+						onSendComment: this.props.onSendComment,
+					})
+					: null
 			)
 		)
 	},

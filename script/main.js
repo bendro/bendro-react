@@ -34,11 +34,25 @@ module.exports = function renderComments(site, options, elem) {
 
 	props.onSendComment = function(comment) {
 		conn.postComment(comment, function(err, commentRes) {
+			var comments
 			if(err) {
-				throw err
+				if(comment.responseTo) {
+					comments = Api.editCommentById(
+						comp.props.comments,
+						comment.responseTo,
+						function(c) {
+							return c.set('formError', 'Fehler beim Senden des Kommentars')
+						}
+					)
+				} else {
+					comp.setProps({formError: 'Fehler beim Senden des Kommentars'})
+				}
+
+				console.error('error on posting a comment (', comment, '):', err)
+			} else {
+				comments = Api.addCommentToTree(comp.props.comments, commentRes)
 			}
 
-			var comments = Api.addCommentToTree(comp.props.comments, commentRes)
 			comp.setProps({comments: comments})
 		})
 	}
@@ -47,7 +61,9 @@ module.exports = function renderComments(site, options, elem) {
 
 	conn.getComments(function(err, res) {
 		if(err) {
-			throw err
+			comp.setProps({error: 'Fehler beim Laden der Kommentare'})
+			console.error('error on loading comments:', err)
+			return
 		}
 
 		comp.setProps({comments: res.comments})
